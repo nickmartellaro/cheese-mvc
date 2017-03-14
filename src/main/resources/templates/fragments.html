@@ -10,10 +10,28 @@
 </head>
 <body>
 
-<nav th:fragment="navigation">
-    <a href="/cheese">List</a>
-    <a href="/cheese/add">Add</a>
-</nav>
+
+<div th:fragment="title" class="container">
+    <div class="row">
+        <div class="column">
+            <img class="u-max-full-width"
+                 th:src="@{https://upload.wikimedia.org/wikipedia/commons/4/47/WV_banner_Cheese_in_Munich.jpg}"></img>
+        </div>
+    </div>
+    <div class="row">
+        <h2 th:text="${title}">Default Title</h2>
+    </div>
+</div>
+
+<div th:fragment="navigation" class="container">
+
+    <div class="row">
+        <a class="button" href="/cheese">List</a>
+        <a class="button button-primary" href="/cheese/add">Add</a>
+        <a class="button button-primary" href="/cheese/delete">Delete</a>
+    </div>
+
+</div>
 
 </body>
 </html>

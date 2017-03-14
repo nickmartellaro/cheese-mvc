@@ -4,12 +4,23 @@
 <body>
 <h1 th:text="${title}">Default Title</h1>
 
-<nav th:replace="fragments :: navigation"></nav>
+<div class="container">
+    <form method="post">
 
-<form method="post">
-    <input type="text" name="cheeseName" />
-    <input type="submit" value="Add Cheese" />
-</form>
+        <div class="row">
+            <div class="six columns">
+                <label for="cheeseNameInput">Name</label>
+                <input class="u-full-width" type="text" name="cheeseName" id="cheeseNameInput"/>
+            </div>
+            <div class="six columns">
+                <label for="cheeseDescriptionInput">Description</label>
+                <input class="u-full-width" type="text" name="description" id="cheeseDescriptionInput"/>
+            </div>
+            <input class="button-primary" type="submit" value="Add Cheese"/>
+
+        </div>
+    </form>
+</div>
 
 </body>
 </html>
