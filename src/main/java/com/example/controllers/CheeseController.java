@@ -1,13 +1,15 @@
 package com.example.controllers;
 
+import com.example.models.Cheese;
+import com.example.models.CheeseData;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 
 /**
@@ -18,48 +20,45 @@ import java.util.HashMap;
 @RequestMapping("cheese")
 public class CheeseController {
 
-    static HashMap<String, String> cheeses = new HashMap<>();
+
 
     // Request path: /cheese
     @RequestMapping(value = "")
     public String index(Model model) {
 
-        model.addAttribute("cheeses", cheeses); // passing an arraylist
+        model.addAttribute("cheeses", CheeseData.getAll());
         model.addAttribute("title", "My Cheeses");
-        return "/cheese/index"; // template name, no directory because the default is the templates folder
+
+        return "cheese/index";
     }
 
-    @RequestMapping(value="add", method = RequestMethod.GET)
+    @RequestMapping(value = "add", method = RequestMethod.GET)
     public String displayAddCheeseForm(Model model) {
-
-        model.addAttribute("tittle", "Add Cheese");
+        model.addAttribute("title", "Add Cheese");
         return "cheese/add";
-
     }
 
     @RequestMapping(value = "add", method = RequestMethod.POST)
-    public String processAddCheeseForm(@RequestParam String cheeseName, @RequestParam String description) {
-        cheeses.put(cheeseName, description);
+    public String processAddCheeseForm(@ModelAttribute Cheese newCheese) {
+        CheeseData.add(newCheese);
         return "redirect:";
     }
 
-    // Request path: GET /cheese/delete
-    // Returns delete cheese form
-    @RequestMapping(value = "delete", method = RequestMethod.GET)
-    public String displayDeleteCheeseForm(Model model) {
-        model.addAttribute("cheeses", cheeses);
-        model.addAttribute("title", "Delete Cheese");
-        return "cheese/delete";
+    @RequestMapping(value = "remove", method = RequestMethod.GET)
+    public String displayRemoveCheeseForm(Model model) {
+        model.addAttribute("cheeses", CheeseData.getAll());
+        model.addAttribute("title", "Remove Cheese");
+        return "cheese/remove";
     }
 
-    // Request path: GET /cheese/delete/{cheesename}
-    // Using PathVariable ended up being much cleaner than what I was trying to accomplish in class
-    // Deletes the specified cheese
-    // Redirects to index
-    @RequestMapping(value = "delete/{cheese}", method = RequestMethod.GET)
-    public String processDeleteCheese(@PathVariable String cheese) {
-        cheeses.remove(cheese);
-        // Redirect to /cheese
+    @RequestMapping(value = "remove", method = RequestMethod.POST)
+    public String processRemoveCheeseForm(@RequestParam int[] cheeseIds) {
+
+        for (int cheeseId : cheeseIds) {
+            CheeseData.remove(cheeseId);
+        }
+
         return "redirect:";
     }
 
+}
